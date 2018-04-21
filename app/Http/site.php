@@ -19,7 +19,6 @@ use Moonlight\Properties\PasswordProperty;
 use Moonlight\Properties\RichtextProperty;
 use Moonlight\Properties\TextareaProperty;
 use Moonlight\Properties\TextfieldProperty;
-use Moonlight\Properties\PluginProperty;
 use Moonlight\Properties\VirtualProperty;
 
 $site = \App::make('site');
@@ -199,6 +198,13 @@ $site->
 			setShow(true)
 		)->
 		addProperty(
+			ImageProperty::create('picture')->
+			setTitle('Картинка')->
+			setResize(240, 240, 100)->
+			addResize('thumbnail', 60, 60, 100)->
+			setShow(true)
+		)->
+		addProperty(
 			OneToOneProperty::create('service_section_id')->
 			setTitle('Служебный раздел')->
 			setRelatedClass('App\ServiceSection')->
@@ -317,37 +323,6 @@ $site->
 	)->
 
 	/*
-	 * Расход Ольки
-	 */
-
-	addItem(
-		Item::create('App\Expense')->
-		setTitle('Расход Ольки')->
-		setCreate(true)->
-		addOrderBy('created_at', 'desc')->
-		addProperty(
-			MainProperty::create('name')->
-			setTitle('Название')->
-			setRequired(true)
-		)->
-		addProperty(
-			FloatProperty::create('price')->
-			setTitle('Сумма, руб.')->
-			setShow(true)
-		)->
-		addProperty(
-			OneToOneProperty::create('service_section_id')->
-			setTitle('Служебный раздел')->
-			setRelatedClass('App\ServiceSection')->
-			setParent(true)->
-            setOpenItem(true)->
-			setRequired(true)
-		)->
-		addTimestamps(false)->
-		addSoftDeletes()
-	)->
-
-	/*
 	 * Задача
 	 */
 
@@ -389,9 +364,7 @@ $site->
 	bind(sprintf('App.ServiceSection.%d', env('SITE_STATISTICS', 3)), ['App.ServiceSection'])->
 	bind(sprintf('App.ServiceSection.%d', env('SITE_EATEN_FOODSTUFFS', 4)), ['App.EatenFoodstuff'])->
 	bind(sprintf('App.ServiceSection.%d', env('SITE_WEIGTH_LOG', 7)), ['App.Weight'])->
-	bind(sprintf('App.ServiceSection.%d', env('SITE_EARNINGS', 8)), [
-		'App.Earning', 'App.Expense'
-	])->
+	bind(sprintf('App.ServiceSection.%d', env('SITE_EARNINGS', 8)), ['App.Earning'])->
 	bind(sprintf('App.ServiceSection.%d', env('SITE_TASKS', 9)), ['App.Task'])->
 
 	addRubric(
@@ -413,7 +386,10 @@ $site->
 		])
 	)->
 
-	addBrowsePlugin(sprintf('App.ServiceSection.%d', env('SITE_EATEN_FOODSTUFFS', 4)), '\App\Http\Plugins\EatenToday')->
 	addEditScript('App.EatenFoodstuff', '/js/plugins/food.js')->
+	addBrowsePlugin(sprintf('App.ServiceSection.%d', env('SITE_EATEN_FOODSTUFFS', 4)), '\App\Http\Plugins\EatenToday')->
+	addBrowseScript(sprintf('App.ServiceSection.%d', env('SITE_WEIGHT_STAT', 6)), 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js')->
+	addBrowsePlugin(sprintf('App.ServiceSection.%d', env('SITE_WEIGHT_STAT', 6)), '\App\Http\Plugins\WeightChart')->
+	addBrowsePlugin(sprintf('App.ServiceSection.%d', env('SITE_EARNINGS', 8)), '\App\Http\Plugins\OlyaEarnings')->
 
 	end();
