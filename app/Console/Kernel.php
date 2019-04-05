@@ -25,12 +25,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('backup:database')
-        ->daily()
-        ->emailOutputTo('denis-shumeev@yandex.ru');
+        ->daily();
+        // ->emailOutputTo('denis-shumeev@yandex.ru');
         
         $schedule->command('background:load')
-        ->dailyAt('9:00')
-        ->emailOutputTo('denis-shumeev@yandex.ru');
+        ->dailyAt('9:00');
+        // ->emailOutputTo('denis-shumeev@yandex.ru');
     }
 
     /**

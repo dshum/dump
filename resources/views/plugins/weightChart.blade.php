@@ -50,13 +50,13 @@ var weightChart2 = new Chart(ctx2, {
             label: 'Вес',
             data: [{!! $data1 !!}],
             backgroundColor: 'transparent',
-            borderColor: 'royalblue',
+            borderColor: 'silver',
             borderWidth: 2
         }, {
             label: 'Вес av',
             data: [{!! $data2 !!}],
             backgroundColor: 'transparent',
-            borderColor: 'silver',
+            borderColor: 'royalblue',
             borderWidth: 2
         }]
     },
